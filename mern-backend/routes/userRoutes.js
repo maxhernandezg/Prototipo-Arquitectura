@@ -2,24 +2,39 @@ const express = require('express');
 const User = require('../models/User');
 const router = express.Router();
 
-// Crear un nuevo usuario
+// Función para crear un usuario
 router.post('/', async (req, res) => {
   try {
-    const user = new User(req.body);
-    await user.save();
-    res.status(201).json(user);
+    const user = new User(req.body); // Crear un usuario con los datos enviados
+    await user.save(); // Guardar en MongoDB
+    res.status(201).json({ success: true, data: user });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ success: false, message: error.message });
   }
 });
 
-// Obtener todos los usuarios
-router.get('/', async (req, res) => {
+// Función para iniciar sesión
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
   try {
-    const users = await User.find();
-    res.json(users);
+    // Busca el usuario por email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
+    }
+
+    // Verifica la contraseña (esto supone que tienes contraseñas en texto plano, para más seguridad usa bcrypt)
+    if (password !== user.password) {
+      return res.status(401).json({ success: false, message: 'Contraseña incorrecta' });
+    }
+
+    // Respuesta exitosa
+    res.json({ success: true, message: 'Login exitoso', user });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Error en el servidor' });
   }
 });
 

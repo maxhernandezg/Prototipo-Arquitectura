@@ -19,9 +19,9 @@ app.use(cors());
 app.use(express.json());
 
 // Rutas
-app.use('/api/users', userRoutes);
-app.use('/api/books', bookRoutes);
-app.use('/api/reservations', reservationRoutes);
+app.use('/api/users', userRoutes); // http://localhost:5000/api/users
+app.use('/api/books', bookRoutes); // http://localhost:5000/api/books
+app.use('/api/reservations', reservationRoutes); // http://localhost:5000/api/reservations
 
 // Iniciar el servidor
 app.listen(PORT, () => {
