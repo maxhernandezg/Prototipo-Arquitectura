@@ -14,13 +14,14 @@ const LoginScreen = ({ navigation }) => { // Recibe la prop navigation
   const handleLogin = async () => {
     try {
       // Realizar la petición POST al backend
-      const response = await api.post('/login', { email, password }); // Enviar email y contraseña
+      // La ruta está en el archivo server.js (/users) y en userRoutes.js (/login)
+      const response = await api.post('/users/login', { email, password }); // Enviar email y contraseña
 
       // Si la respuesta es exitosa, redirigir al usuario a otra pantalla
       if (response.data.success) { 
         Alert.alert('Login exitoso', 'Bienvenido a la aplicación');
         // Redirigir a otra pantalla, por ejemplo, Dashboard
-        navigation.navigate('Dashboard');
+        navigation.navigate('BookStore');
 
       // Si la respuesta no es exitosa, mostrar un mensaje de error
       } else {
